@@ -1,0 +1,52 @@
+.main {
+    height: 100vh;
+    background: rgb(253, 242, 242);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    font-size: 18px;
+    padding: 8px 30px;
+    background: #0d6efd;
+    border-radius: 5px;
+    cursor: pointer;
+
+
+}
+
+.dashmain {
+    background:#0d6efd;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.secondbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    color:gray;
+    font-weight: 600;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 1px 1px 1px rgba(255, 253, 253, 0.3), -1px -1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.secondbar img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.secondbar button {
+    width: 30px;
+    background: transparent;
+    cursor: pointer;
+    color: red;
+    margin: 0px 10px;
+}

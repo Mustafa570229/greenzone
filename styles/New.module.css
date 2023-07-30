@@ -1,0 +1,137 @@
+.newsPanel {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 20px;
+  }
+  
+  .newsUploadPanel {
+    width: 40%;
+    padding: 5px;
+  }
+  
+  .panelShowing {
+    width: 58%;
+    padding: 5px;
+  }
+  
+  
+  
+  .contentPanel {
+    margin: 10px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .collectionsNames span:nth-child(1),
+  .contentPanel span:nth-child(1) {
+    width: 70%;
+    padding: 5px;
+    font-size: 14px;
+  
+  }
+  .collectionsNames span:nth-child(1){
+  font-weight:700;
+  }
+  
+  .collectionsNames span:nth-child(2),
+  .contentPanel span:nth-child(2) {
+    width: 23%;
+    font-size: 12px;
+    color: green;
+  
+  }
+  
+  .collectionsNames span:nth-child(3),
+  .contentPanel span:nth-child(3) {
+    width: 3%;
+  cursor: pointer;
+    color: red;
+    padding-bottom: 4px;
+  
+  }
+  .panelShowing .collectionsNames {
+    margin: 10px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.1);
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .deleteAndEdit{
+    width: 12%;
+  }
+ 
+  @media (max-width: 940px) {
+   
+    .newsPanel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: 0px;
+  
+    }
+    
+    .newsUploadPanel {
+      width: 100%;
+      padding: 10px;
+  
+    }
+    
+    .panelShowing {
+      width: 100%;
+    }
+    
+    
+    
+    .contentPanel {
+      margin: 5px;
+      box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+   
+    
+    .collectionsNames span:nth-child(1),
+    .contentPanel span:nth-child(1) {
+      width: 65%;
+      padding: 3px;
+      font-size: 13px;
+    
+    }
+    
+    .collections-names span:nth-child(2),
+    .contentPanel span:nth-child(2) {
+      width: 20%;
+      font-size: 10px;
+      color: green;
+    
+    }
+    
+    .collections-names span:nth-child(3),
+    .contentPanel span:nth-child(3) {
+      width: 9%;
+    cursor: pointer;
+      color: red;
+      padding-bottom: 4px;
+    
+    }
+    .panelShowing .collectionsNames {
+      margin: 10px;
+      box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.1);
+    
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .deleteAndEdit{
+      width: 22%;
+    }
+   
+   
+  }
