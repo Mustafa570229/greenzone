@@ -17,17 +17,18 @@ export default async function handle(req, res) {
       res.json(true);
     }
   } else if (method === 'PUT') {
-    const { newCollection, newTitle, newContent, _id } = req.body;
-    await MyData.updateOne({ _id }, { newCollection, newTitle, newContent });
+    const { newCollection, newTitle, newContent, _id ,images} = req.body;
+    await MyData.updateOne({ _id }, { newCollection, newTitle, newContent ,images});
     res.json(true);
   } else if (method === 'POST') {
-    const { newTitle, newContent, newCollection } = req.body;
+    const { newTitle, newContent, newCollection ,images} = req.body;
 
     try {
       const dataDoc = await MyData.create({
         newTitle,
         newContent,
         newCollection,
+        images
       });
       res.json(dataDoc);
     } catch (error) {

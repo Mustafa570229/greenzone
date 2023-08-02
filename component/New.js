@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import styles from '@/styles/New.module.css';
 import axios from 'axios';
+import { ReactSortable } from "react-sortablejs";
+import { BounceLoader } from "react-spinners";
 
 const New = () => {
   const [newTitle, setNewTitle] = useState('');
@@ -13,6 +15,8 @@ const New = () => {
   const [deleteItemId, setDeleteItemId] = useState('');
   const [Name, setName] = useState('');
   const [collName, setCollName] = useState('');
+  const [images, setImages] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [_id, set_id] = useState('');
 
@@ -21,12 +25,12 @@ const New = () => {
     setDeleteItemId('');
   };
 
-  const handleShowDeleteModal = (id, name,collName) => {
+  const handleShowDeleteModal = (id, name, collName) => {
     setShowDeleteModal(true);
     setDeleteItemId(id);
     setName(name);
     setCollName(collName)
-    
+
   };
 
   const handleDelete = async () => {
@@ -51,21 +55,18 @@ const New = () => {
       console.log(error);
     }
   };
-
   const saveData = async (e) => {
     e.preventDefault();
-    const mydata = { newTitle, newContent, newCollection };
+    const mydata = { newTitle, newContent, newCollection, images };
     if (_id) {
-      //update
       await axios.put('/api/mydata', { ...mydata, _id });
     } else {
-      //create
       await axios.post('/api/mydata', mydata);
     }
-
     try {
       setNewTitle('');
       setNewContent('');
+      setImages([])
       fetchData();
     } catch (error) {
       console.log(error);
@@ -77,10 +78,29 @@ const New = () => {
       setNewTitle(response.data.newTitle);
       setNewContent(response.data.newContent);
       setNewCollection(response.data.newCollection);
+      setImages(response.data.images)
       set_id(_id);
     });
   };
 
+  async function uploadImages(ev) {
+    const files = ev.target?.files;
+    if (files?.length > 0) {
+      setIsUploading(true);
+      const data = new FormData();
+      for (const file of files) {
+        data.append('file', file);
+      }
+      const res = await axios.post('/api/upload', data);
+      setImages(oldImages => {
+        return [...oldImages, ...res.data.links];
+      });
+      setIsUploading(false);
+    }
+  }
+  function updateImagesOrder(images) {
+    setImages(images);
+  }
   return (
     <div className={styles.newsPanel}>
       <div className={styles.newsUploadPanel}>
@@ -94,7 +114,6 @@ const New = () => {
               value={newCollection}
               onChange={(e) => setNewCollection(e.target.value)}
             />
-
             <Form.Label className={styles.addingHeadPanel}>Enter a new Title</Form.Label>
             <Form.Control
               type="text"
@@ -103,7 +122,6 @@ const New = () => {
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
-
             <Form.Label className={styles.addingHeadPanel}>Enter a new Content</Form.Label>
 
             <Form.Control
@@ -114,8 +132,47 @@ const New = () => {
               onChange={(e) => setNewContent(e.target.value)}
             />
           </Form.Group>
+
+          <label>
+            Photos
+          </label>
+          <div className={styles.imagesField}>
+            <ReactSortable
+              list={images}
+              className={styles.reactsorttable}
+              setList={updateImagesOrder}>
+              {!!images?.length && images.map(link => (
+                <div key={link} >
+                 <div className={styles.imagesDiv}><img src={link} alt="" className={styles.imgstyle} /></div> 
+                </div>
+              ))}
+            </ReactSortable>
+            {isUploading && (
+              <div className={styles.sppinerstyle}>
+                <BounceLoader color={'#1E3A8A'} speedMultiplier={2} />
+              </div>
+            )}
+            <label className={styles.addimg}>
+              <svg xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              strokeWidth={1.5} 
+              stroke="currentColor" 
+              style={{width:"30px"}}
+              >
+                <path strokeLinecap="round" 
+                strokeLinejoin="round" 
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+              </svg>
+              <div>
+                Add image
+              </div>
+              <input type="file" onChange={uploadImages} hidden />
+            </label>
+          </div>
+
           <div>
-            <Button variant="primary" type="submit" className="mb-3">
+            <Button variant="primary" type="submit" style={{marginBottom:"3rem"}}>
               Save Data
             </Button>
           </div>
@@ -155,11 +212,11 @@ const New = () => {
               .filter((el) => el.newCollection === valueOfCollections)
               .map((el) => (
                 <tr key={el._id}>
-                  <td style={{color:"gray"}}>{el.newTitle}</td>
+                  <td style={{ color: "gray" }}>{el.newTitle}</td>
                   <td className={styles.deleteAndEdit}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      onClick={() => handleShowDeleteModal(el._id, el.newTitle,el.newCollection)}
+                      onClick={() => handleShowDeleteModal(el._id, el.newTitle, el.newCollection)}
                       fill="none"
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
@@ -179,7 +236,7 @@ const New = () => {
                       <Modal.Body>
                         Do you really want to delete{' '}
                         <span style={{ color: '#f55', fontWeight: 'bold', margin: '3px' }}>{Name}</span>
-                        from <span style={{color:"blue",fontWeight: 'bold', margin: '3px'}}>{collName}</span>?
+                        from <span style={{ color: "blue", fontWeight: 'bold', margin: '3px' }}>{collName}</span>?
                       </Modal.Body>
                       <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseDeleteModal}>

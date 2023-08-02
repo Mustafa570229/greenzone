@@ -3,6 +3,7 @@ const DataSchema = new Schema({
   newTitle: { type: String, required: true },
   newContent: { type: String, required: true },
   newCollection: { type: String, required: true },
+  images: [{type:String}],
 
 },
 {
